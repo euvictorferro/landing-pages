@@ -4,7 +4,7 @@ import type React from "react"
 import { useState } from "react"
 import { useLanguage } from "@/lib/language-context"
 import { createClient } from "@/lib/supabase/client"
-import { Calendar, Clock, User, Mail, Phone, MessageSquare, Check, Loader2 } from "lucide-react"
+import { Calendar, Clock, User, Mail, Phone, MessageSquare, Check, Loader2, CalendarPlus } from "lucide-react"
 
 const dayNames = {
   en: ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"],
@@ -73,6 +73,7 @@ const translations = {
     step3: "WhatsApp reminder message",
     step4: "24-hour reminder before the call",
     newBooking: "Schedule another consultation",
+    addToCalendar: "Add to Calendar",
     december: "December",
   },
   pt: {
@@ -105,6 +106,7 @@ const translations = {
     step3: "Mensagem de lembrete no WhatsApp",
     step4: "Lembrete 24 horas antes da chamada",
     newBooking: "Agendar outra consultoria",
+    addToCalendar: "Adicionar à Agenda",
     december: "Dezembro",
   },
 }
@@ -452,6 +454,37 @@ export function CalendarSection() {
     </div>
   )
 
+  const generateCalendarLink = () => {
+    if (!selectedDate || !selectedTime) return "#"
+
+    const [hours, minutes] = selectedTime.split(":")
+    const startDate = new Date(
+      currentYear,
+      currentMonth,
+      selectedDate,
+      Number.parseInt(hours),
+      Number.parseInt(minutes),
+    )
+    const endDate = new Date(startDate.getTime() + 30 * 60 * 1000) // 30 minutes later
+
+    const formatDateForCalendar = (date: Date) => {
+      return date
+        .toISOString()
+        .replace(/[-:]/g, "")
+        .replace(/\.\d{3}/, "")
+    }
+
+    const title = encodeURIComponent(language === "pt" ? "Consultoria CliqueBoost" : "CliqueBoost Consultation")
+    const details = encodeURIComponent(
+      language === "pt"
+        ? "Consultoria gratuita de 30 minutos com a equipe CliqueBoost para analisar oportunidades de crescimento para o seu negócio."
+        : "Free 30-minute consultation with the CliqueBoost team to analyze growth opportunities for your business.",
+    )
+    const location = encodeURIComponent("Online (link will be sent via email)")
+
+    return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${formatDateForCalendar(startDate)}/${formatDateForCalendar(endDate)}&details=${details}&location=${location}`
+  }
+
   const renderSuccessStep = () => (
     <div className="max-w-md mx-auto text-center">
       <div className="rounded-[24px] border border-border p-8 bg-card">
@@ -480,6 +513,16 @@ export function CalendarSection() {
             ))}
           </ul>
         </div>
+
+        <a
+          href={generateCalendarLink()}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="w-full mb-4 py-3 rounded-xl font-semibold text-sm bg-gradient-to-r from-[#8A2BE2] to-[#007BFF] text-white hover:opacity-90 transition-opacity flex items-center justify-center gap-2"
+        >
+          <CalendarPlus className="w-4 h-4" />
+          {t.addToCalendar}
+        </a>
 
         <button onClick={() => setCurrentStep("calendar")} className="text-sm text-[#8A2BE2] hover:underline">
           {t.newBooking}
