@@ -21,6 +21,10 @@ export const metadata: Metadata = {
     "lead generation",
     "marketing agency USA",
   ],
+  icons: {
+    icon: "/favicon.png",
+    apple: "/favicon.png",
+  },
   openGraph: {
     title: "Clique Boost | BoostConnect - Integrated Marketing System",
     description: "From 0 to 150 qualified leads in 30 days with AI-powered automation",
