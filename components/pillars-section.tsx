@@ -124,15 +124,15 @@ export function PillarsSection() {
           ))}
         </div>
 
-        <div className="text-center mt-12">
+        <div className="text-center mt-12 px-4 sm:px-6 lg:px-8">
           <Button
             asChild
             size="lg"
-            className="bg-[#00C49A] hover:bg-[#00C49A]/90 text-[#151515] font-semibold text-lg px-8 py-6 glow-accent"
+            className="bg-[#00C49A] hover:bg-[#00C49A]/90 text-[#151515] font-semibold text-sm sm:text-base lg:text-lg px-4 sm:px-6 lg:px-8 py-4 sm:py-5 lg:py-6 glow-accent w-full sm:w-auto max-w-full"
           >
-            <a href="#agendar">
-              {t("pillars.cta")}
-              <ArrowRight className="ml-2 w-5 h-5" />
+            <a href="#agendar" className="flex items-center justify-center gap-2">
+              <span className="truncate">{t("pillars.cta")}</span>
+              <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
             </a>
           </Button>
         </div>
